@@ -1,5 +1,8 @@
+import inputView from "./inputView.js";
 class App {
-  async run() {}
+  async run() {
+    const inputString = await inputView.getInputString();
+  }
 }
 
 export default App;
