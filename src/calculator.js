@@ -1,6 +1,6 @@
 import { DEFAULT_DELIMITERS, CUSTOM_DELIMITER_REGEX } from "./constants.js";
 import { Validator } from "./validator.js";
-
+import { Console } from "@woowacourse/mission-utils";
 export const Calculator = {
   parseInput(input) {
     if (!input) return [];
@@ -11,10 +11,14 @@ export const Calculator = {
     return numbers.map(Number).reduce((acc, num) => acc + num, 0);
   },
 
-  calculate(input) {
+  async calculate(input) {
     const numbers = this.parseInput(input);
-    Validator.validate(input, numbers); // Validator 호출
-    return this.sum(numbers);
+    const validateTest = await Validator.validate(input, numbers); // Validator 호출
+    if (validateTest) {
+      return this.sum(numbers);
+    }else {
+      return 0;
+    }
   },
 
   _splitNumbers(input) {

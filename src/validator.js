@@ -1,28 +1,29 @@
 import { ERROR_MESSAGES } from "./constants.js";
 
 export const Validator = {
-  validate(input, numbers) {
-    this._validateEmptyInput(input);
-    this._validateFormat(numbers);
-    this._validateNegativeNumbers(numbers);
+  async validate(input, numbers) {
+    let validateTest = true;
+    validateTest = await this._validateFormat(numbers,validateTest);
+    validateTest = await this._validateNegativeNumbers(numbers,validateTest);
+    return validateTest;
   },
 
-  _validateEmptyInput(input) {
-    if (!input.trim()) {
-      throw new Error(ERROR_MESSAGES.EMPTY_INPUT);
-    }
-  },
 
-  _validateFormat(numbers) {
+
+  async _validateFormat(numbers, validateTest) {
     if (numbers.some((num) => num.trim() === "")) {
+      validateTest = false;
       throw new Error(ERROR_MESSAGES.INVALID_FORMAT);
     }
+    return validateTest;
   },
 
-  _validateNegativeNumbers(numbers) {
+  async _validateNegativeNumbers(numbers, validateTest) {
     if (numbers.some((num) => +num < 0)) {
+      validateTest = false;
       throw new Error(ERROR_MESSAGES.NEGATIVE_NUMBER);
     }
+    return validateTest;
   },
 };
 
